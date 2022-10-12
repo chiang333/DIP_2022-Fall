@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
         string in_file = argv[i];
         string index = {in_file[in_file.length()-5]};
         // process(flip) the input file
-        process(in_file, "output" + index + ".bmp");
+        process(in_file, "output" + index + "_flip.bmp");
     }
 	return 0;
 }
