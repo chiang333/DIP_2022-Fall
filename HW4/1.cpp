@@ -290,11 +290,6 @@ void process(string in_file, string out_file, int n){
     char *value = new char[skip_bits];
     fin.read(value, skip_bits);
 
-    // fin2.read((char*)&type, sizeof(type));
-    // fin2.read((char*)&fileHeader, sizeof(BmpFileHeader));
-    // fin2.read((char*)&infoHeader, sizeof(BmpInfoHeader));
-    // fin2.read(value, skip_bits);
-
 	int height = infoHeader.biHeight, weight = infoHeader.biWidth;
     int size = height * weight;
     int channel = infoHeader.biBitCount / 8;
@@ -303,7 +298,6 @@ void process(string in_file, string out_file, int n){
     {   
         if(infoHeader.biBitCount == 24){
             RGB **img_in = new RGB*[height];
-            // RGB **img_in2 = new RGB*[height];
             RGB **img_out = new RGB*[height];
             int read_length = weight * channel;
             // address the input format issue
@@ -312,10 +306,8 @@ void process(string in_file, string out_file, int n){
             }
             for(int i=0; i<height; i++){
                 img_in[i] = new RGB[weight];
-                // img_in2[i] = new RGB[weight];
                 img_out[i] = new RGB[weight];
                 fin.read((char*)img_in[i], read_length);
-                // fin2.read((char*)img_in2[i], read_length);
             }
 
             fout.open(out_file, ios_base::binary | ios::out);
@@ -325,10 +317,7 @@ void process(string in_file, string out_file, int n){
             fout.write((char*)&infoHeader, sizeof(infoHeader));
             fout.write(value, skip_bits);
 
-            // evaluate(img_in, img_in2, height, weight);
             restoration(img_in, img_out, height, weight, n);
-            // evaluate(img_out, img_in2, height, weight);
-            
 
             for(int i=0; i<height; i++){
                 fout.write((char*)img_out[i], read_length);
@@ -341,7 +330,6 @@ void process(string in_file, string out_file, int n){
                 delete [] img_out[i];
             }
             delete [] img_in;
-            // delete [] img_in2;
             delete [] img_out;
         }
     }
@@ -351,8 +339,9 @@ void process(string in_file, string out_file, int n){
 
 int main(int argc, char *argv[])
 {
-    // process("input1.bmp", "output1.bmp", 1);
-    // process("input1.bmp", "image1_ori.bmp", "output1.bmp");
+    process("input1.bmp", "output1.bmp", 1);
     process("input2.bmp", "output2.bmp", 2);
+    // process("input1.bmp", "image1_ori.bmp", "output1.bmp");
+    
 	return 0;
 }
